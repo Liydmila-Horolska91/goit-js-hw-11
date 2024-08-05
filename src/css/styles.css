@@ -14,7 +14,7 @@
   -webkit-text-size-adjust: 100%;
 }
 
-/* GENERAL STYLE*/
+/* GENERAL STYLE */
 h1,
 h2,
 h3,
@@ -50,7 +50,7 @@ img {
   box-sizing: border-box;
 }
 
-/* STYLE*/
+/* STYLE */
 
 .container-gallery {
   padding-left: 15px;
@@ -164,7 +164,7 @@ img {
   letter-spacing: 0.48px;
 }
 
-/* CSS LOADERS */
+/* CSS LOADERS*/
 
 .loader {
   margin-left: 681px;

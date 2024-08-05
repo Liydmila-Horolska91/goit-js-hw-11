@@ -1,16 +1,15 @@
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
+const lightbox = new SimpleLightbox('.gallery-list a', {
+    captions: true,
+    captionsData: 'alt',
+    captionsDelay: 250
+});
 
 export function createImages(data) {
-    const lightbox = new SimpleLightbox('.gallery-list a', {
-        captions: true,
-        captionsData: 'alt',
-        captionsDelay: 250
-    });
-
     const galleryList = document.querySelector('.gallery-list');
-
+    
     let images = data.hits.map((image) =>
         `<div class="image-wrapper">
     <a href="${image.largeImageURL}">
