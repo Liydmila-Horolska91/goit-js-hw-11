@@ -1,0 +1,12 @@
+import{S as n,i as d}from"./assets/vendor-5ObWk2rO.js";(function(){const s=document.createElement("link").relList;if(s&&s.supports&&s.supports("modulepreload"))return;for(const t of document.querySelectorAll('link[rel="modulepreload"]'))e(t);new MutationObserver(t=>{for(const r of t)if(r.type==="childList")for(const i of r.addedNodes)i.tagName==="LINK"&&i.rel==="modulepreload"&&e(i)}).observe(document,{childList:!0,subtree:!0});function o(t){const r={};return t.integrity&&(r.integrity=t.integrity),t.referrerPolicy&&(r.referrerPolicy=t.referrerPolicy),t.crossOrigin==="use-credentials"?r.credentials="include":t.crossOrigin==="anonymous"?r.credentials="omit":r.credentials="same-origin",r}function e(t){if(t.ep)return;t.ep=!0;const r=o(t);fetch(t.href,r)}})();function u(a){return fetch(`https://pixabay.com/api/?key=45091921-bafbe55c990439d7032dec8c8&q=${a}&image_type=photo&orientation=horizontal&safesearch=true`).then(e=>{if(!e.ok)throw new Error(e.status);return e.json()}).catch(e=>{console.log(e)})}const p=new n(".gallery-list a",{captions:!0,captionsData:"alt",captionsDelay:250});function h(a){const s=document.querySelector(".gallery-list");let o=a.hits.map(e=>`<div class="image-wrapper">
+    <a href="${e.largeImageURL}">
+    <img class="gallery-img" src="${e.webformatURL}" alt="${e.tags}"></img>
+    </a>
+    <div class="text-wrapper">
+    <div class="text-item"><h5 class="text-header">Likes</h5><p class="text-paragraph">${e.likes}</p></div>
+    <div class="text-item"><h5 class="text-header">Views</h5><p class="text-paragraph">${e.views}</p></div>
+    <div class="text-item"><h5 class="text-header">Comments</h5><p class="text-paragraph">${e.comments}</p></div>
+    <div class="text-item"><h5 class="text-header">Downloads</h5><p class="text-paragraph">${e.downloads}</p></div>
+    </div>
+    </div>`).join("");s.insertAdjacentHTML("beforeend",o),p.refresh()}function m(){const a=document.querySelector(".gallery-list");a.innerHTML=""}const l=document.querySelector(".form-gallery"),f=document.querySelector(".form-gallery-input"),c=document.querySelector(".loader");l.addEventListener("submit",g);function g(a){a.preventDefault(),m(),c.classList.remove("hidden");let s=f.value.trim();u(`${s}`).then(o=>{if(o.total===0||s===""){d.error({position:"topRight",message:"Sorry, there are no images matching your search query. Please try again!"}),c.classList.add("hidden");return}else h(o);c.classList.add("hidden")}),l.reset()}
+//# sourceMappingURL=commonHelpers.js.map
