@@ -1,35 +1,40 @@
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
+import iziToast from 'izitoast';
+import { fetchImages } from './js/pixabay-api.js';
+import { renderImages } from './js/render-functions.js';
 
-import { searchGalleryQuery } from "./js/pixabay-api";
-import { createImages, clearImages } from "./js/render-functions";
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById('search-input');
+const loader = document.getElementById('loader');
 
-const form = document.querySelector('.form-gallery');
-const input = document.querySelector('.form-gallery-input');
-const loader = document.querySelector('.loader');
+searchForm.addEventListener('submit', async function (event) {
+  event.preventDefault();
 
-form.addEventListener('submit', handleSubmitBtn);
+  gallery.innerHTML = '';
 
-function handleSubmitBtn(event) {
-    event.preventDefault();
-    clearImages();
-    loader.classList.remove('hidden');
+  const searchTerm = searchInput.value.trim();
 
-    let searchWord = input.value.trim();
+  if (searchTerm === '') {
+    iziToast.warning({
+      title: 'Warning',
+      message: 'Please enter a search term',
+      position: 'topRight',
+    });
+    return;
+  }
 
-    searchGalleryQuery(`${searchWord}`)
-            .then((data) => {
-                if (data.total === 0 || searchWord === "") { 
-                    iziToast.error({
-                        position: 'topRight',
-                        message: "Sorry, there are no images matching your search query. Please try again!",
-                    })
-                    loader.classList.add('hidden');
-                    return;
-                }
-                else { createImages(data) }
-                loader.classList.add('hidden');
-            })
-    
-    form.reset();
-}
+  try {
+    loader.style.display = 'block';
+    const images = await fetchImages(searchTerm);
+    renderImages(images);
+  } catch (error) {
+    console.error('Error searching images:', error);
+    iziToast.error({
+      title: 'Error',
+      message: 'Failed to search images. Please try again later.',
+      position: 'topRight',
+    });
+  } finally {
+    loader.style.display = 'none';
+    searchInput.value = '';
+  }
+});
