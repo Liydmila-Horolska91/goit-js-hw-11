@@ -1,7 +1,7 @@
 // https://pixabay.com/api?key=45176564-fb4661ac13389b43e2d38b088&q=dog
 const BASE_URL = 'https://pixabay.com/';
 const END_POINT = 'api/';
-const KEY = '45176564-fb4661ac13389b43e2d38b088';
+const KEY = '45229967-0ed54d12f3523f97afd78f48b';
 const options = {};
 export class NewsAPI {
   query = '';
