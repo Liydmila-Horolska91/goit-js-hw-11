@@ -4,6 +4,7 @@ import { NewsAPI } from '/js/pixabay-api';
 import { articleTemplate } from '/js/render-functions';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+
 let gallery = new SimpleLightbox('.gallery a');
 const loadElem = document.querySelector('.loader');
 
@@ -20,7 +21,7 @@ const newsApi = new NewsAPI();
 
 refs.formElem.addEventListener('submit', onFormSubmit);
 
-async function onFormSubmit(e) {
+function onFormSubmit(e) {
   e.preventDefault();
   showSpinner();
 
@@ -29,8 +30,7 @@ async function onFormSubmit(e) {
 
   refs.articleListElem.innerHTML = '';
 
-  const ok = newsApi.query.trim() !== '';
-  if (!ok) {
+  if (newsApi.query.trim() === '') {
     hideSpinner();
     iziToast.error({
       message: 'Info Search input must be filled!',
@@ -38,29 +38,27 @@ async function onFormSubmit(e) {
     return;
   }
 
-  try {
-    const data = await newsApi.getArticles();
-    hideSpinner();
-    if (data.total == 0) {
-      iziToast.info({
-        title: 'Sorry,',
-        message:
-          'there are no images matching your search query. Please try again!',
+  newsApi.getArticles()
+    .then(data => {
+      hideSpinner();
+      if (data.total === 0) {
+        iziToast.info({
+          title: 'Sorry,',
+          message: 'There are no images matching your search query. Please try again!',
+        });
+      }
+
+      newsApi.totalResult = data.totalResults;
+      renderArticles(data.hits);
+    })
+    .catch(err => {
+      hideSpinner();
+      newsApi.totalResult = 0;
+      iziToast.error({
+        title: 'Error',
+        message: err.message,
       });
-    }
-
-    newsApi.totalResult = data.totalResults;
-
-    renderArticles(data.hits);
-  } catch (err) {
-    newsApi.totalResult = 0;
-    iziToast.error({
-      title: 'Error1',
-      message: err.message,
     });
-  }
-
-  hideSpinner();
 }
 
 function articlesTemplate(articles) {
